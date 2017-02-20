@@ -1,0 +1,7 @@
+---
+applications:
+- name: MicroservicesUI
+  memory: 256M
+  instances: 1
+  buildpack: php_buildpack 
+  path: .
