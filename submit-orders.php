@@ -1,30 +1,26 @@
 <?php
 require_once("service-discovery.php");
 $data = file_get_contents('php://input');
-$services = getenv("VCAP_SERVICES");
-$services_json = json_decode($services, true);
 
 // Get the orders application url route from service discovery
 //$ordersRoute = getAPIRoute("Orders-API");
 
-$application = getenv("sgroup_name");
-$applicationURI=$application;
-error_log("order applicationURI  is ");
-error_log($applicationURI);
+$application = getenv("VCAP_APPLICATION");
+$application_json = json_decode($application, true);
+$applicationURI = $application_json["application_uris"][0];
+
 //echo "\r\napplicationURI:" . $applicationURI;
 if (substr( $applicationURI, 0, 3 ) === "ui-") {
-    $orderHost = "orders-api-" . substr($applicationURI, 3, 35);
+    $ordersRoute = "orders-api-" . substr($applicationURI, 3);
 } else {
-    $orderHost = str_replace("-ui-", "-orders-api-", $applicationURI);
+    $ordersRoute = str_replace("-ui-", "-orders-api-", $applicationURI);
 }
-error_log("Order host  is ");
-error_log($orderHost);
-$orderRoute = "http://" . $orderHost . ".mybluemix.net/JavaOrdersAPI-1.0/rest/orders";
-error_log("orderRoute is ");
-error_log($orderRoute);
-$ordersURL=$orderRoute;
-error_log("ordersURL is ");
-error_log($ordersURL);
+
+$ordersHost = "http://" . $ordersRoute;
+$ordersURL = $ordersHost . "/rest/orders";
+
+//$ordersURL = $ordersRoute . "/rest/orders";
+//$ordersURL = "http://ms-ordersAPI-hyperfunctional-throstle.mybluemix.net/rest/orders";
 
 function httpPost($data,$url){
 	$ch = curl_init();
