@@ -5,19 +5,24 @@ $data = file_get_contents('php://input');
 // Get the orders application url route from service discovery
 //$ordersRoute = getAPIRoute("Orders-API");
 
-$application = getenv("VCAP_APPLICATION");
-$application_json = json_decode($application, true);
-$applicationURI = $application_json["application_uris"][0];
+$application = getenv("sgroup_name");
+$applicationURI=$application;
 
 //echo "\r\napplicationURI:" . $applicationURI;
-if (substr( $applicationURI, 0, 3 ) === "ui-") {
+ if (substr( $applicationURI, 0, 3 ) === "ui-") {
+    $orderHost = "orders-api-" . substr($applicationURI, 3, 35);
     $ordersRoute = "orders-api-" . substr($applicationURI, 3);
-} else {
+ } else {
+    $orderHost = str_replace("-ui-", "-orders-api-", $applicationURI);
     $ordersRoute = str_replace("-ui-", "-orders-api-", $applicationURI);
-}
+ }
 
-$ordersHost = "http://" . $ordersRoute;
-$ordersURL = $ordersHost . "/rest/orders";
+$orderRoute = "http://" . $orderHost . ".mybluemix.net/JavaOrdersAPI-1.0/rest/orders";
+
+$ordersURL=$orderRoute;
+error_log("ordersURL is ");
+error_log($ordersURL);
+
 
 //$ordersURL = $ordersRoute . "/rest/orders";
 //$ordersURL = "http://ms-ordersAPI-hyperfunctional-throstle.mybluemix.net/rest/orders";
