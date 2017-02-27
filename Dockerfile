@@ -10,4 +10,4 @@ ENV A8_CONTROLLER_URL=http://micro-a8-controller.mybluemix.net
 ENV A8_CONTROLLER_POLL=60s
 ENV A8_LOG=enable_log
 copy * ./
-CMD ["a8sidecar", "--register", "--supervise", "php", "-a"]
+CMD ["a8sidecar", "--register", "--supervise", "apache2-foreground"]
