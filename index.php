@@ -24,6 +24,7 @@ if (substr( $applicationURI, 0, 3 ) === "ui-") {
 error_log("catalogHost  is ");
 error_log($catalogHost);
 $catalogRoute = "http://" . $catalogHost . ".mybluemix.net";
+$catalogRoute = "http://localhost:6379/catalogservice/";
 error_log("Catalog Route is ");
 error_log($CatalogRoute);
 
